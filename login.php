@@ -15,7 +15,7 @@
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        echo "hi";
+        
         $servername = "localhost";
         $username = "root";
         $password = "1234";
