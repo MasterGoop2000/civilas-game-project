@@ -7,14 +7,14 @@
 </head>
 <body>
     
-    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
         Username: <input name="username">
         Password: <input name="password">
         <input type="submit">
     </form>
 
     <?php
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    
         
         $servername = "localhost";
         $username = "root";
@@ -29,22 +29,44 @@
             echo "database created successfully";
         }
 
+       
+        if(!$conn->select_db($dbname)){
         if($conn->query("CREATE DATABASE userdata") === TRUE){
             echo "sql is successful";
         } else {
             echo "sql failed";
         }
+    }
 
         $tableCreate = "CREATE TABLE loginData (
             username VARCHAR(100) NOT NULL,
             password VARCHAR(100) NOT NULL
         )";
 
+        if($conn->query($tableCreate) === TRUE){
+            echo "Table created";
+        }
+
+        if($conn->query("INSERT INTO loginData(username, password)
+        VALUES ('abc', '123')") === TRUE){
+            echo "setting failed";
+        }
+
         if($conn->query($tableCreate) === FALSE){
             echo "Database failed";
         }
 
-    }
+        $result = $conn->query("SELECT username, password FROM loginData");
+        
+        
+        if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                if($row['password'] == "abc"){
+                    echo "SKIBIDI";
+                }
+            }
+        }
+        
     ?>
 </body>
 </html>
